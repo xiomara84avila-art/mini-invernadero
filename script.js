@@ -1,13 +1,6 @@
 const USUARIO = "ITLB";
 const PASSWORD = "ELECTRONICA123";
 
-// Verificar sesión al cargar
-window.onload = function () {
-    if (localStorage.getItem("sesion") === "activa") {
-        mostrarSistema();
-    }
-};
-
 // LOGIN
 function login() {
     let user = document.getElementById("usuario").value;
@@ -15,25 +8,21 @@ function login() {
 
     if (user === USUARIO && pass === PASSWORD) {
         localStorage.setItem("sesion", "activa");
-        mostrarSistema();
+        window.location.href = "index.html";
     } else {
         document.getElementById("error").innerText = "Datos incorrectos";
     }
 }
 
-// Mostrar sistema después de login
-function mostrarSistema() {
-    document.getElementById("login").style.display = "none";
-    document.querySelectorAll(".seccion").forEach(sec => {
-        sec.classList.add("oculto");
-    });
-    document.getElementById("inicio").classList.remove("oculto");
+// PROTEGER HOME
+function protegerPagina() {
+    if (localStorage.getItem("sesion") !== "activa") {
+        window.location.href = "login.html";
+    }
 }
 
-// Cambiar secciones
+// CAMBIO DE SECCIONES (igual que antes)
 function mostrarSeccion(id) {
-    if (!verificarSesion()) return;
-
     document.querySelectorAll(".seccion").forEach(sec => {
         sec.classList.add("oculto");
     });
@@ -41,28 +30,16 @@ function mostrarSeccion(id) {
     document.getElementById(id).classList.remove("oculto");
 }
 
-// Verificar sesión
-function verificarSesion() {
-    if (localStorage.getItem("sesion") !== "activa") {
-        alert("Debes iniciar sesión");
-        return false;
-    }
-    return true;
-}
-
-// Cerrar sesión
+// CERRAR SESIÓN
 function cerrarSesion() {
     localStorage.removeItem("sesion");
-    location.reload();
+    window.location.href = "login.html";
 }
 
-// Simulación de envío de comandos
+// ENVÍO DE COMANDOS
 function enviarComando(comando) {
-    if (!verificarSesion()) return;
-
     alert("Comando enviado: " + comando);
 
-    // Aquí puedes conectar con Arduino (ESP32)
-    // Ejemplo:
-    // fetch("http://IP_DEL_ESP32/" + comando);
+    // Aquí conectarás el ESP32 luego
+    // fetch("http://IP/" + comando);
 }
