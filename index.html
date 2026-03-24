@@ -2,21 +2,69 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Login - ITLB</title>
+<title>Control WiFi - ITLB</title>
 <link rel="stylesheet" href="styles.css">
 </head>
-<body class="login-body">
+<body onload="protegerPagina()">
 
-<div class="login-container">
-    <h1>ITLB</h1>
-    <h2>Control WiFi</h2>
+<header>
+    <h1>INSTITUTO TÉCNICO LUIS BOGRÁN</h1>
+    <nav>
+        <button onclick="mostrarSeccion('inicio')">Inicio</button>
+        <button onclick="mostrarSeccion('bomba')">Bomba</button>
+        <button onclick="mostrarSeccion('foco')">Foco</button>
+        <button onclick="mostrarSeccion('ventilador')">Ventilador</button>
+        <button onclick="cerrarSesion()">Cerrar sesión</button>
+    </nav>
+</header>
 
-    <input type="text" id="usuario" placeholder="Usuario">
-    <input type="password" id="password" placeholder="Contraseña">
+<main>
 
-    <button onclick="login()">Ingresar</button>
-    <p id="error"></p>
-</div>
+    <!-- INICIO -->
+    <section id="inicio" class="seccion">
+        <div class="card">
+            <h2>Bienvenido</h2>
+            <p>
+                Sistema de automatización agrícola desarrollado con Arduino
+                por el Instituto Técnico Luis Bográn.
+            </p>
+
+            <div class="grid">
+                <div class="card-btn" onclick="mostrarSeccion('bomba')">🌱 Riego</div>
+                <div class="card-btn" onclick="mostrarSeccion('foco')">🌡️ Temperatura</div>
+                <div class="card-btn" onclick="mostrarSeccion('ventilador')">💧 Humedad</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOMBA -->
+    <section id="bomba" class="seccion oculto">
+        <div class="card">
+            <h2>Bomba de Riego</h2>
+            <button class="on" onclick="enviarComando('BOMBA_ON')">Encender</button>
+            <button class="off" onclick="enviarComando('BOMBA_OFF')">Apagar</button>
+        </div>
+    </section>
+
+    <!-- FOCO -->
+    <section id="foco" class="seccion oculto">
+        <div class="card">
+            <h2>Foco (Temperatura)</h2>
+            <button class="on" onclick="enviarComando('FOCO_ON')">Encender</button>
+            <button class="off" onclick="enviarComando('FOCO_OFF')">Apagar</button>
+        </div>
+    </section>
+
+    <!-- VENTILADOR -->
+    <section id="ventilador" class="seccion oculto">
+        <div class="card">
+            <h2>Ventilador (Humedad)</h2>
+            <button class="on" onclick="enviarComando('VENT_ON')">Encender</button>
+            <button class="off" onclick="enviarComando('VENT_OFF')">Apagar</button>
+        </div>
+    </section>
+
+</main>
 
 <script src="script.js"></script>
 </body>
