@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Control Inteligente - ITLB</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>INSTITUTO TÉCNICO LUIS BOGRÁN</h1>
+    <nav>
+        <button onclick="mostrarSeccion('inicio')">Inicio</button>
+        <button onclick="mostrarSeccion('bomba')">Bomba</button>
+        <button onclick="mostrarSeccion('foco')">Foco</button>
+        <button onclick="mostrarSeccion('ventilador')">Ventilador</button>
+        <button onclick="cerrarSesion()">Cerrar sesión</button>
+    </nav>
+</header>
+
+<main id="contenido">
+
+    <!-- LOGIN -->
+    <div id="login">
+        <h2>Iniciar Sesión</h2>
+        <input type="text" id="usuario" placeholder="Usuario">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button onclick="login()">Ingresar</button>
+        <p id="error"></p>
+    </div>
+
+    <!-- INICIO -->
+    <section id="inicio" class="seccion oculto">
+        <h2>Bienvenido al Sistema de Control WiFi</h2>
+        <p>
+            Este proyecto ha sido desarrollado por el Instituto Técnico Luis Bográn,
+            utilizando tecnología Arduino para automatizar procesos agrícolas.
+        </p>
+        <p>
+            Desde esta plataforma podrás controlar:
+        </p>
+        <ul>
+            <li>🌱 Sistema de riego (Bomba)</li>
+            <li>🌡️ Control de temperatura (Foco)</li>
+            <li>💧 Control de humedad (Ventilador)</li>
+        </ul>
+    </section>
+
+    <!-- BOMBA -->
+    <section id="bomba" class="seccion oculto">
+        <h2>Control de Bomba de Riego</h2>
+        <button onclick="enviarComando('BOMBA_ON')">Encender</button>
+        <button onclick="enviarComando('BOMBA_OFF')">Apagar</button>
+    </section>
+
+    <!-- FOCO -->
+    <section id="foco" class="seccion oculto">
+        <h2>Control de Foco (Temperatura)</h2>
+        <button onclick="enviarComando('FOCO_ON')">Encender</button>
+        <button onclick="enviarComando('FOCO_OFF')">Apagar</button>
+    </section>
+
+    <!-- VENTILADOR -->
+    <section id="ventilador" class="seccion oculto">
+        <h2>Control de Ventilador (Humedad)</h2>
+        <button onclick="enviarComando('VENT_ON')">Encender</button>
+        <button onclick="enviarComando('VENT_OFF')">Apagar</button>
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
