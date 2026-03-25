@@ -1,27 +1,4 @@
-/* FUENTE Y BASE */
-
-.estado {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #0f9d58;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-weight: bold;
-    display: none;
-    z-index: 1000;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-    .estado {
-        width: 90%;
-        text-align: center;
-    }
-}
-
+/* 🌐 BASE */
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -29,7 +6,23 @@ body {
     color: #333;
 }
 
-/* LOGIN */
+/* 🔔 MENSAJE ESTADO */
+.estado {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0f9d58;
+    color: white;
+    padding: 14px 22px;
+    border-radius: 12px;
+    font-weight: bold;
+    display: none;
+    z-index: 1000;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+/* 📱 LOGIN */
 .login-body {
     display: flex;
     justify-content: center;
@@ -48,7 +41,6 @@ body {
 
 .login-container h1 {
     color: #0f9d58;
-    margin-bottom: 5px;
 }
 
 .login-container h2 {
@@ -56,37 +48,41 @@ body {
     margin-bottom: 20px;
 }
 
-/* INPUTS */
+/* ✏️ INPUTS (sin zoom en móvil) */
 input {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     margin: 10px 0;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid #ddd;
     outline: none;
+    font-size: 16px; /* 🔥 evita zoom */
+    transition: 0.2s;
 }
 
 input:focus {
     border-color: #0f9d58;
+    box-shadow: 0 0 10px rgba(15,157,88,0.2);
 }
 
-/* BOTÓN LOGIN */
+/* 🔘 BOTÓN LOGIN */
 .login-container button {
     width: 100%;
-    padding: 12px;
-    border-radius: 10px;
+    padding: 14px;
+    border-radius: 12px;
     border: none;
     background: #0f9d58;
     color: white;
     font-weight: bold;
     cursor: pointer;
+    transition: 0.2s;
 }
 
-.login-container button:hover {
-    background: #d32f2f;
+.login-container button:active {
+    transform: scale(0.95);
 }
 
-/* HEADER */
+/* 🧭 HEADER */
 header {
     background: white;
     padding: 15px;
@@ -99,7 +95,7 @@ header h1 {
     color: #0f9d58;
 }
 
-/* NAV */
+/* 📌 NAV */
 nav {
     display: flex;
     justify-content: center;
@@ -123,7 +119,7 @@ nav button:hover {
     color: white;
 }
 
-/* TARJETAS */
+/* 📦 TARJETAS */
 .card {
     margin: 30px auto;
     padding: 25px;
@@ -135,7 +131,7 @@ nav button:hover {
     text-align: center;
 }
 
-/* GRID */
+/* 🔲 GRID */
 .grid {
     display: flex;
     gap: 15px;
@@ -159,41 +155,68 @@ nav button:hover {
     color: white;
 }
 
-/* BOTONES CONTROL */
+/* 🔥 BOTONES PRO */
 button {
     margin: 10px;
     padding: 15px 25px;
-    border-radius: 12px;
+    border-radius: 14px;
     border: none;
     cursor: pointer;
     font-size: 16px;
-    transition: 0.3s;
+    transition: all 0.2s ease;
+    transform: scale(1);
+    position: relative;
+    overflow: hidden;
 }
 
+/* HOVER (PC) */
+button:hover {
+    transform: scale(1.05);
+}
+
+/* CLICK */
+button:active {
+    transform: scale(0.9);
+}
+
+/* ON */
 .on {
     background: #0f9d58;
     color: white;
+    box-shadow: 0 5px 15px rgba(15,157,88,0.3);
 }
 
-.on:hover {
-    background: #0c7c45;
-}
-
+/* OFF */
 .off {
     background: #d32f2f;
     color: white;
+    box-shadow: 0 5px 15px rgba(211,47,47,0.3);
 }
 
-.off:hover {
-    background: #a82222;
+/* EFECTO ONDA */
+button::after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+    transform: scale(0);
+    opacity: 0;
 }
 
-/* OCULTAR */
+button:active::after {
+    transform: scale(2.5);
+    opacity: 1;
+    transition: 0.4s;
+}
+
+/* ❌ OCULTAR */
 .oculto {
     display: none;
 }
 
-/* TEXTO ERROR */
+/* ⚠️ ERROR */
 #error {
     color: red;
     margin-top: 10px;
@@ -231,5 +254,10 @@ button {
 
     button {
         width: 90%;
+    }
+
+    .estado {
+        width: 90%;
+        text-align: center;
     }
 }
