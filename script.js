@@ -41,12 +41,5 @@ function cerrarSesion() {
 }
 
 function enviarComando(comando) {
-    fetch(BASE_URL + comando)
-    .then(response => response.text())
-    .then(data => {
-        mostrarRespuesta(data);
-    })
-    .catch(error => {
-        mostrarRespuesta("Error: " + error);
-    });
+    window.location.href = BASE_URL + comando;
 }
