@@ -36,10 +36,13 @@ function cerrarSesion() {
     window.location.href = "login.html";
 }
 
-// ENVÍO DE COMANDOS
 function enviarComando(comando) {
-    alert("Comando enviado: " + comando);
-
-    // Aquí conectarás el ESP32 luego
-    // fetch("http://IP/" + comando);
+    fetch("http://192.168.1.10/" + comando)
+    .then(response => response.text())
+    .then(data => {
+        alert("Respuesta del ESP: " + data);
+    })
+    .catch(error => {
+        alert("Error: " + error);
+    });
 }
