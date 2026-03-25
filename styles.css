@@ -1,4 +1,27 @@
 /* FUENTE Y BASE */
+
+.estado {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0f9d58;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    display: none;
+    z-index: 1000;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .estado {
+        width: 90%;
+        text-align: center;
+    }
+}
+
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, sans-serif;
