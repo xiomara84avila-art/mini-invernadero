@@ -1,6 +1,10 @@
 const USUARIO = "ITLB";
 const PASSWORD = "ELECTRONICA123";
 
+// CONFIGURACIÓN GLOBAL
+const BASE_IP = "192.168.1.10"; // ← SOLO cambias esto
+const BASE_URL = "http://" + BASE_IP + "/";
+
 // LOGIN
 function login() {
     let user = document.getElementById("usuario").value;
@@ -37,12 +41,12 @@ function cerrarSesion() {
 }
 
 function enviarComando(comando) {
-    fetch("http://192.168.1.10/" + comando)
+    fetch(BASE_URL + comando)
     .then(response => response.text())
     .then(data => {
-        alert("Respuesta del ESP: " + data);
+        mostrarRespuesta(data);
     })
     .catch(error => {
-        alert("Error: " + error);
+        mostrarRespuesta("Error: " + error);
     });
 }
