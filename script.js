@@ -2,7 +2,7 @@ const USUARIO = "ITLB";
 const PASSWORD = "ELECTRONICA123";
 
 // CONFIGURACIÓN GLOBAL
-const BASE_IP = "192.168.1.10"; // ← SOLO cambias esto
+const BASE_IP = "192.168.1.7"; // ← SOLO cambias esto
 const BASE_URL = "http://" + BASE_IP + "/";
 
 // LOGIN
