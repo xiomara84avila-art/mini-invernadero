@@ -1,0 +1,114 @@
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+const char* ssid = "TU_WIFI";
+const char* password = "TU_PASSWORD";
+
+ESP8266WebServer server(80);
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+#define BTN_RESP D5
+#define BTN_RESET D6
+
+String textoLCD = "Esperando...";
+int velocidad = 0;
+
+void setup() {
+
+Serial.begin(115200);
+
+pinMode(BTN_RESP, INPUT_PULLUP);
+pinMode(BTN_RESET, INPUT_PULLUP);
+
+lcd.init();
+lcd.backlight();
+
+lcd.setCursor(0,0);
+lcd.print("Conectando...");
+
+WiFi.begin(ssid, password);
+
+while (WiFi.status() != WL_CONNECTED) {
+delay(500);
+Serial.print(".");
+}
+
+lcd.clear();
+lcd.setCursor(0,0);
+lcd.print("IP:");
+
+lcd.setCursor(0,1);
+lcd.print(WiFi.localIP());
+
+Serial.println(WiFi.localIP());
+
+server.on("/", [](){
+
+server.send(200,"text/plain","ONLINE");
+
+});
+
+server.on("/lcd", [](){
+
+if(server.hasArg("texto")){
+
+textoLCD = server.arg("texto");
+
+lcd.clear();
+
+lcd.setCursor(0,0);
+lcd.print("Pregunta:");
+
+lcd.setCursor(0,1);
+
+String corta = textoLCD.substring(0,16);
+
+lcd.print(corta);
+
+}
+
+server.send(200,"text/plain","OK");
+
+});
+
+server.on("/estado", [](){
+
+String json = "{";
+
+json += "\"respuesta\":";
+json += digitalRead(BTN_RESP)==LOW ? "1":"0";
+
+json += ",";
+
+json += "\"reset\":";
+json += digitalRead(BTN_RESET)==LOW ? "1":"0";
+
+json += "}";
+
+server.send(200,"application/json",json);
+
+});
+
+server.on("/velocidad", [](){
+
+velocidad = random(20,120);
+
+server.send(200,"text/plain",String(velocidad));
+
+});
+
+server.begin();
+
+lcd.clear();
+lcd.print("Servidor ON");
+
+}
+
+void loop() {
+
+server.handleClient();
+
+}
