@@ -3,18 +3,68 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-const char* ssid = "TU_WIFI";
-const char* password = "TU_PASSWORD";
+const char* ssid = "Familia_Zambrano";
+const char* password = "20082018";
 
 ESP8266WebServer server(80);
 
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 #define BTN_RESP D5
 #define BTN_RESET D6
 
-String textoLCD = "Esperando...";
-int velocidad = 0;
+bool lastResp = HIGH;
+bool lastReset = HIGH;
+
+void cors() {
+  server.sendHeader("Access-Control-Allow-Origin", "*");
+}
+
+String limpiarLCD(String txt){
+
+txt.replace("á","a");
+txt.replace("é","e");
+txt.replace("í","i");
+txt.replace("ó","o");
+txt.replace("ú","u");
+txt.replace("ñ","n");
+txt.replace("¿","");
+txt.replace("?","");
+txt.replace("¡","");
+txt.replace("!","");
+
+return txt;
+
+}
+
+void linea(int fila, String txt){
+
+txt = limpiarLCD(txt);
+
+while(txt.length() < 20){
+txt += " ";
+}
+
+lcd.setCursor(0,fila);
+lcd.print(txt.substring(0,20));
+
+}
+
+void pantalla(
+String l1,
+String l2="",
+String l3="",
+String l4=""
+){
+
+lcd.clear();
+
+linea(0,l1);
+linea(1,l2);
+linea(2,l3);
+linea(3,l4);
+
+}
 
 void setup() {
 
@@ -23,62 +73,66 @@ Serial.begin(115200);
 pinMode(BTN_RESP, INPUT_PULLUP);
 pinMode(BTN_RESET, INPUT_PULLUP);
 
+Wire.begin(D2,D1);
+
 lcd.init();
 lcd.backlight();
 
-lcd.setCursor(0,0);
-lcd.print("Conectando...");
+pantalla(
+"TIMBITO QUIZ",
+"Iniciando..."
+);
 
-WiFi.begin(ssid, password);
+WiFi.mode(WIFI_STA);
+WiFi.begin(ssid,password);
 
-while (WiFi.status() != WL_CONNECTED) {
+while(WiFi.status()!=WL_CONNECTED){
+
 delay(500);
 Serial.print(".");
-}
-
-lcd.clear();
-lcd.setCursor(0,0);
-lcd.print("IP:");
-
-lcd.setCursor(0,1);
-lcd.print(WiFi.localIP());
-
-Serial.println(WiFi.localIP());
-
-server.on("/", [](){
-
-server.send(200,"text/plain","ONLINE");
-
-});
-
-server.on("/lcd", [](){
-
-if(server.hasArg("texto")){
-
-textoLCD = server.arg("texto");
-
-lcd.clear();
-
-lcd.setCursor(0,0);
-lcd.print("Pregunta:");
-
-lcd.setCursor(0,1);
-
-String corta = textoLCD.substring(0,16);
-
-lcd.print(corta);
 
 }
 
+pantalla(
+"WIFI CONECTADO",
+WiFi.localIP().toString(),
+"",
+"Servidor listo"
+);
+
+server.on("/ping",[](){
+
+cors();
 server.send(200,"text/plain","OK");
 
 });
 
-server.on("/estado", [](){
+server.on("/mostrar",[](){
 
-String json = "{";
+String a =
+server.arg("a");
 
-json += "\"respuesta\":";
+String b =
+server.arg("b");
+
+String c =
+server.arg("c");
+
+String d =
+server.arg("d");
+
+pantalla(a,b,c,d);
+
+cors();
+server.send(200,"text/plain","OK");
+
+});
+
+server.on("/estado",[](){
+
+String json="{";
+
+json += "\"resp\":";
 json += digitalRead(BTN_RESP)==LOW ? "1":"0";
 
 json += ",";
@@ -88,22 +142,31 @@ json += digitalRead(BTN_RESET)==LOW ? "1":"0";
 
 json += "}";
 
-server.send(200,"application/json",json);
+cors();
+
+server.send(
+200,
+"application/json",
+json
+);
 
 });
 
-server.on("/velocidad", [](){
+server.on("/velocidad",[](){
 
-velocidad = random(20,120);
+int v = random(20,120);
 
-server.send(200,"text/plain",String(velocidad));
+cors();
+
+server.send(
+200,
+"text/plain",
+String(v)
+);
 
 });
 
 server.begin();
-
-lcd.clear();
-lcd.print("Servidor ON");
 
 }
 
